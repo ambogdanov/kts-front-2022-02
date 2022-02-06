@@ -14,7 +14,7 @@ export default class ApiStore implements IApiStore {
                                                      }: RequestParams<ReqT>): Promise<ApiResponse<SuccessT, ErrorT>> {
 
         // TODO: Напишите здесь код, который с помощью fetch будет делать запрос
-        let response:any ;
+        let response:Response;
         if(Object.keys(data).length === 0){ // Request with GET/HEAD method cannot have body.
              response = await fetch(`${this.baseUrl}${endpoint}`, {
                 method: method,
