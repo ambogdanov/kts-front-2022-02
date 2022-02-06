@@ -1,4 +1,4 @@
-import {ApiResponse, IApiStore, RequestParams, StatusHTTP} from "./types";
+import {ApiResponse, IApiStore, RequestParams, StatusHTTP} from './types';
 
 export default class ApiStore implements IApiStore {
     constructor(readonly baseUrl: string) {
@@ -7,49 +7,43 @@ export default class ApiStore implements IApiStore {
     }
 
     async request<SuccessT, ErrorT = any, ReqT = {}>({
-                                                         endpoint,
-                                                         method,
-                                                         headers,
-                                                         data
-                                                     }: RequestParams<ReqT>): Promise<ApiResponse<SuccessT, ErrorT>> {
-
+        endpoint,
+        method,
+        headers,
+        data,
+    }: RequestParams<ReqT>): Promise<ApiResponse<SuccessT, ErrorT>> {
         // TODO: Напишите здесь код, который с помощью fetch будет делать запрос
-        let response:Response;
-        if(Object.keys(data).length === 0){ // Request with GET/HEAD method cannot have body.
-             response = await fetch(`${this.baseUrl}${endpoint}`, {
-                method: method,
-                headers: headers,
-            })
-        }else{
+        let response: Response;
+        if (Object.keys(data).length === 0) {
+            // Request with GET/HEAD method cannot have body.
             response = await fetch(`${this.baseUrl}${endpoint}`, {
                 method: method,
                 headers: headers,
-                body: JSON.stringify(data)
-            })
+            });
+        } else {
+            response = await fetch(`${this.baseUrl}${endpoint}`, {
+                method: method,
+                headers: headers,
+                body: JSON.stringify(data),
+            });
         }
-            if (response.status==200 || response.status==201) {
-                return {
-                    success: true,
-                    data: await response.json(),
-                    status: StatusHTTP.OK,
-                }
-            }else if(response.status==422){
-                return {
-                    success: false,
-                    data: await response.json(),
-                    status: StatusHTTP.UnprocessableEntity,
-                }
-            }else if(response.status==401) {
-                return {
-                    success: false,
-                    data: await response.json(),
-                    status: StatusHTTP.Unauthorized,
-                }
-            }
+        if (response.status >= 200 && response.status < 300) {
+            return {
+                success: true,
+                data: await response.json(),
+                status: response.status,
+            };
+        } else if (response.status >= 400 && response.status < 600) {
             return {
                 success: false,
                 data: await response.json(),
-                status: StatusHTTP.NotFound
-            }
+                status: response.status,
+            };
+        }
+        return {
+            success: false,
+            data: await response.json(),
+            status: response.status,
+        };
     }
 }
