@@ -3,7 +3,7 @@ import GitHubStore from "./store/GitHubStore";
 function App() {
   const gitHubStore = new GitHubStore();
   const EXAMPLE_ORGANIZATION = 'ktsstudio';
-  const authToken = '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'
+  const authToken = 'PASTE_YOUR_TOKEN_HERE'
 
 
 
