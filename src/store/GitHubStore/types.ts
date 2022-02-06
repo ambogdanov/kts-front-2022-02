@@ -1,4 +1,4 @@
-import {ApiResponse} from "../../shared/store/ApiStore/types";
+import {ApiResponse} from "@shared/store/ApiStore/types";
 /** Интерфейс класса для работы с GitHub API
  * названия getOrganizationReposList
  * (а также типов GetOrganizationReposListParams и RepoItem)
