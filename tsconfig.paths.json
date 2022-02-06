@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "@store": ["./store"],
+      "@shared": ["./shared"],
+      "@ApiStore": ["./shared/ApiStore"]
+    }
+}
+}

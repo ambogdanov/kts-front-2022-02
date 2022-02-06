@@ -23,9 +23,11 @@ export type RequestParams<ReqT> = {
 export enum StatusHTTP {
     // TODO: заполнить
     OK = 200,
+    Created = 201,
     BadRequest = 400,
     NotFound = 404,
     Unauthorized = 401,
+    UnprocessableEntity = 422,
     InternalServerError = 500,
 }
 

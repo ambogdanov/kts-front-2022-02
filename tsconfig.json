@@ -6,6 +6,11 @@
       "dom.iterable",
       "esnext"
     ],
+    "baseUrl": "src",
+    "paths": {
+      "@store": ["./store"],
+      "@apiStore": ["shared/store/ApiStore/*"],
+    },
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -24,5 +29,5 @@
 },
   "include": [
     "src"
-  ]
+  ],
 }

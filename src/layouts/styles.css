@@ -4,7 +4,8 @@
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
     --red-color: #ff5555;
-    --gray-color: #7E7E7E;
+    --dark-gray-color: #7E7E7E;
+    --gray-color:#B6B6B6;
     --light-gray-color: #D9D9D9
 }
 
@@ -30,7 +31,7 @@
 .search-form__input{
     width: 295px;
     height: 50px;
-    color: var(--gray-color);
+    color: var(--dark-gray-color);
     border: var(--light-gray-color) solid 1px;
     border-radius: 6px;
     font-size: 14px;
@@ -75,7 +76,7 @@
 }
 .repo-item:hover {
     cursor: pointer;
-    box-shadow: 0 2px 6px #B6B6B6;
+    box-shadow: 0 2px 6px var(--gray-color);
 }
 .repo-item__logo {
     width: 80px;
@@ -110,7 +111,7 @@
 .repo-item__bottom {
     display: flex;
     flex-wrap: nowrap;
-    color: var(--gray-color);
+    color: var(--dark-gray-color);
     font-size: 14px;
     font-weight: normal;
 }
@@ -120,7 +121,7 @@
 }
 .repo-item__org_name{
     text-decoration: none;
-    color: var(--gray-color);
+    color: var(--dark-gray-color);
     font-size: 14px;
     font-weight: normal;
     margin: 4px 0 4px 0
