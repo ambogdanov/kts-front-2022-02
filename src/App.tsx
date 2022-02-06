@@ -1,9 +1,11 @@
 import React, {useEffect} from 'react';
-import GitHubStore from "./store/GitHubStore";
+import GitHubStore from "@gitHubStore";
 function App() {
   const gitHubStore = new GitHubStore();
-  const EXAMPLE_ORGANIZATION = 'ktsstudio';
-  const authToken = 'PASTE_YOUR_TOKEN_HERE'
+  const EXAMPLE_ORGANIZATION:string = 'ktsstudio';
+  const authToken:string = 'PASTE_YOUR_TOKEN_HERE';
+  const repoName:string = 'testRepo';
+  const repoIsPrivate:boolean = true;
 
 
 
@@ -13,7 +15,7 @@ function App() {
     }).then(result => {
       console.log(result); // в консоли появится список репозиториев в ktsstudio
     })
-    gitHubStore.createRepoAuthUser({name:"test3", isPrivate:true, authToken: authToken}).then(result => {
+    gitHubStore.createRepoAuthUser({name:repoName, isPrivate:repoIsPrivate, authToken: authToken}).then(result => {
       console.log(result); // в консоли появятся параметры нового репозитория
     })
   })

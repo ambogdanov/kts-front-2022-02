@@ -1,4 +1,4 @@
-import ApiStore from "../../shared/store/ApiStore";
+import ApiStore from "@apiStore";
 import {IGitHubStore, RepoItem, GetOrganizationReposListParams, GetNewRepoParams} from "./types";
 import {ApiResponse, HTTPMethod, RequestParams} from "../../shared/store/ApiStore/types";
 

@@ -6,10 +6,10 @@
       "dom.iterable",
       "esnext"
     ],
-    "baseUrl": "src",
+    "baseUrl": "./src",
     "paths": {
-      "@store": ["./store"],
-      "@apiStore": ["shared/store/ApiStore/*"],
+      "@gitHubStore": ["store/GitHubStore/"],
+      "@apiStore": ["shared/store/ApiStore/"],
     },
     "allowJs": true,
     "skipLibCheck": true,
