@@ -1,49 +1,29 @@
-import {ApiResponse, IApiStore, RequestParams, StatusHTTP} from './types';
+import {ApiResponse, HTTPMethod, IApiStore, RequestParams, StatusHTTP} from './types';
 
 export default class ApiStore implements IApiStore {
     constructor(readonly baseUrl: string) {
-        // TODO: Примите из параметров конструктора baseUrl
-        // и присвойте его в this.baseUrl
     }
 
-    async request<SuccessT, ErrorT = any, ReqT = {}>({
-        endpoint,
-        method,
-        headers,
-        data,
-    }: RequestParams<ReqT>): Promise<ApiResponse<SuccessT, ErrorT>> {
+    private fetchParams<ReqT>({endpoint, method, headers, data}: RequestParams<ReqT>): [string, RequestInit]{
+        const reqInit:RequestInit = {method: method, headers: headers,};
+        const url:string = `${this.baseUrl}${endpoint}`;
+        if(method===HTTPMethod.POST){
+            reqInit.body = JSON.stringify(data);
+        }
+        return [url, reqInit];
+    }
+
+    async request<SuccessT, ErrorT = any, ReqT = {}>(params: RequestParams<ReqT>): Promise<ApiResponse<SuccessT, ErrorT>> {
         // TODO: Напишите здесь код, который с помощью fetch будет делать запрос
-        let response: Response;
-        if (Object.keys(data).length === 0) {
-            // Request with GET/HEAD method cannot have body.
-            response = await fetch(`${this.baseUrl}${endpoint}`, {
-                method: method,
-                headers: headers,
-            });
-        } else {
-            response = await fetch(`${this.baseUrl}${endpoint}`, {
-                method: method,
-                headers: headers,
-                body: JSON.stringify(data),
-            });
-        }
-        if (response.status >= 200 && response.status < 300) {
-            return {
-                success: true,
-                data: await response.json(),
-                status: response.status,
-            };
-        } else if (response.status >= 400 && response.status < 600) {
-            return {
-                success: false,
-                data: await response.json(),
-                status: response.status,
-            };
-        }
-        return {
-            success: false,
+        let response: Response = await fetch(...this.fetchParams(params));
+        let apiRes = {
+            success: true,
             data: await response.json(),
-            status: response.status,
-        };
+            status: response.status
+        }
+        if (response.status >= StatusHTTP.BadRequest) {
+            apiRes.success= false;
+        }
+        return apiRes;
     }
 }

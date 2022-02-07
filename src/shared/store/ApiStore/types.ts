@@ -24,11 +24,13 @@ export enum StatusHTTP {
     // TODO: заполнить
     OK = 200,
     Created = 201,
+    MultipleChoices = 300,
     BadRequest = 400,
     NotFound = 404,
     Unauthorized = 401,
     UnprocessableEntity = 422,
     InternalServerError = 500,
+    InvalidSSLCertificate = 526,
 }
 
 // Ответ API
@@ -44,6 +46,8 @@ export type ApiResponse<SuccessT, ErrorT> =
     status: StatusHTTP;
 
 };
+
+
 
 // Интерфейс для класса, с помощью которого можно делать запросы к API
 export interface IApiStore {
