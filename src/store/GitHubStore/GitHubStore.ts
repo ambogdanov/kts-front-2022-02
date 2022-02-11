@@ -1,16 +1,13 @@
 import ApiStore from "@apiStore";
-import {IGitHubStore, RepoItem, GetOrganizationReposListParams, GetNewRepoParams} from "./types";
+import {IGitHubStore, RepoItem, GetOrganizationReposListParams, GetNewRepoParams, RepoDetails} from "./types";
 import {ApiResponse, HTTPMethod, RequestParams} from "@shared/store/ApiStore/types";
 
 const baseUrl:string = 'https://api.github.com/';
 
 export default class GitHubStore implements IGitHubStore {
-    private readonly apiStore = new ApiStore(baseUrl); // TODO: не забудьте передать baseUrl в конструктор
-
-    // TODO: реализовать интерфейс IGitHubStore
+    private readonly apiStore = new ApiStore(baseUrl);
 
     async getOrganizationReposList({organizationName}: GetOrganizationReposListParams): Promise<ApiResponse<RepoItem[],any>> {
-        // TODO: Здесь сделайте вызов из this.apiStore и верните результат
         const params:RequestParams<{}> = {
             method: HTTPMethod.GET,
             endpoint: `orgs/${organizationName}/repos`,
@@ -23,7 +20,7 @@ export default class GitHubStore implements IGitHubStore {
         // Документация github: https://docs.github.com/en/rest/reference/repos#list-organization-repositories
     }
 
-    async createRepoAuthUser({name, isPrivate, authToken}:GetNewRepoParams): Promise<any>{
+    async createRepoAuthUser({name, isPrivate, authToken}:GetNewRepoParams): Promise<ApiResponse<RepoDetails,any>>{
         const params:RequestParams<{}> = {
             method: HTTPMethod.POST,
             endpoint: `user/repos`,

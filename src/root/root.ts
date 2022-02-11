@@ -1,4 +1,4 @@
-import GitHubStore from '../store/GitHubStore/GitHubStore';
+import GitHubStore from '@gitHubStore';
 
 const gitHubStore = new GitHubStore();
 const EXAMPLE_ORGANIZATION: string = 'ktsstudio';

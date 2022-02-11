@@ -14,16 +14,24 @@ export default class ApiStore implements IApiStore {
     }
 
     async request<SuccessT, ErrorT = any, ReqT = {}>(params: RequestParams<ReqT>): Promise<ApiResponse<SuccessT, ErrorT>> {
-        // TODO: Напишите здесь код, который с помощью fetch будет делать запрос
-        let response: Response = await fetch(...this.fetchParams(params));
-        let apiRes = {
-            success: true,
-            data: await response.json(),
-            status: response.status
+        try {
+            let response: Response = await fetch(...this.fetchParams(params));
+            let apiRes = {
+                success: true,
+                data: await response.json(),
+                status: response.status
+            }
+            if (!response.ok) {
+                apiRes.success= false;
+            }
+            return apiRes;
         }
-        if (response.status >= StatusHTTP.BadRequest) {
-            apiRes.success= false;
+        catch (e){
+            return {
+                success: false,
+                data: e,
+                status: StatusHTTP.BadRequest
+            }
         }
-        return apiRes;
     }
 }
