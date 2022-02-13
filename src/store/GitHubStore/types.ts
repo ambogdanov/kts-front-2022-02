@@ -11,14 +11,16 @@ export type GetNewRepoParams = {
 type Owner = {
     login:string,
     repos_url: string,
-    organizations_url: string
-    updated_at: string,
+    html_url: string
+    avatar_url: string,
 }
 
 export type RepoItem ={
     id: number,
     name: string,
     owner: Owner,
+    updated_at: string,
+    stargazers_count: number,
 }
 
 export type RepoDetails = {
@@ -27,6 +29,7 @@ export type RepoDetails = {
     html_url: string,
     name:string
     owner: Owner,
+
 }
 export interface IGitHubStore {
     getOrganizationReposList(params: GetOrganizationReposListParams): Promise<ApiResponse<RepoItem[], any>>;

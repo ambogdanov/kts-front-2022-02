@@ -12,9 +12,11 @@ export default class GitHubStore implements IGitHubStore {
             method: HTTPMethod.GET,
             endpoint: `orgs/${organizationName}/repos`,
             headers: {
-                Accept: 'application/vnd.github.v3+json',
+                accept: 'application/vnd.github.v3+json',
             },
-            data: {},
+            data: {
+               per_page: '12'
+            },
         }
         return await this.apiStore.request(params)
         // Документация github: https://docs.github.com/en/rest/reference/repos#list-organization-repositories

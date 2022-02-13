@@ -1,14 +1,17 @@
 import {ApiResponse, HTTPMethod, IApiStore, RequestParams, StatusHTTP} from './types';
-
+import qs from 'qs';
 export default class ApiStore implements IApiStore {
     constructor(readonly baseUrl: string) {
     }
 
     private fetchParams<ReqT>({endpoint, method, headers, data}: RequestParams<ReqT>): [string, RequestInit]{
         const reqInit:RequestInit = {method: method, headers: headers,};
-        const url:string = `${this.baseUrl}${endpoint}`;
+        let url = `${this.baseUrl}${endpoint}`;
         if(method===HTTPMethod.POST){
             reqInit.body = JSON.stringify(data);
+        }
+        if(method===HTTPMethod.GET){
+            url += `?${qs.stringify(data)}`
         }
         return [url, reqInit];
     }
