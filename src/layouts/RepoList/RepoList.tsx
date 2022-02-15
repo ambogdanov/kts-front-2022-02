@@ -17,7 +17,7 @@ const RepoList: React.FC = (): ReactElement => {
         if(inputRef.current) {inputRef.current.focus()}
     }, [])
 
-    const loadRepos = () => {
+    useEffect(() => {
         gitHubStore
             .getOrganizationReposList({
                 organizationName: EXAMPLE_ORGANIZATION,
@@ -25,7 +25,8 @@ const RepoList: React.FC = (): ReactElement => {
             .then((result) => {
                 setRepos(result.data);
             });
-    }
+    }, [])
+
     const filterRepos: React.ChangeEventHandler<HTMLInputElement> = (e) => {
         const filter = e.target.value;
         setFilter(filter);
@@ -72,7 +73,6 @@ const RepoList: React.FC = (): ReactElement => {
     });
     return (
         <div className="container">
-            <button onClick={loadRepos}>Загрузить список репозиториев</button>
             <div className="search-form">
                 <label>
                     <input type="text" className="search-form__input" placeholder="Введите название организации"
