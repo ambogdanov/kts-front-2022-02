@@ -1,7 +1,13 @@
-import React from 'react';
-import './root/root';
+import React from "react";
+
+import ReposSearchPage from "./ReposSearchPage";
+
 function App() {
-    return <div className='App'></div>;
+  return (
+    <div className="App">
+      <ReposSearchPage />
+    </div>
+  );
 }
 
 export default App;
