@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useMemo, useState } from "react";
 import "../layouts/styles.css";
 
 import Button from "@components/Button";
@@ -45,10 +45,12 @@ const ReposSearchPage: React.FC = (): ReactElement => {
 
   log("Render");
 
-  const elements = repos.map((item: RepoItem) => {
-    log("Array mapping");
-    return <RepoTile item={item} onClick={() => {}} key={item.id} />;
-  });
+  const elements = useMemo<JSX.Element[]>((): JSX.Element[] => {
+    return repos.map((item: RepoItem) => {
+      log("Array mapping");
+      return <RepoTile item={item} onClick={() => {}} key={item.id} />;
+    });
+  }, [repos]);
 
   return (
     <div className="container">
