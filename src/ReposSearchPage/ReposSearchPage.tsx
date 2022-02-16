@@ -15,11 +15,13 @@ const gitHubStore = new GitHubStore();
 
 const ReposSearchPage: React.FC = (): ReactElement => {
   const [repos, setRepos] = useState<RepoItem[]>([]);
-  const [search, setSearch] = useState("ktsstudio");
+  const [search, setSearch] = useState("google");
   const [isLoading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
+  const [selectedRepo, setSelRepo] = useState<string | null>(null);
 
   const loadRepos = () => {
+    log("Request repo list");
     setLoading(true);
     gitHubStore
       .getOrganizationReposList({
@@ -43,12 +45,35 @@ const ReposSearchPage: React.FC = (): ReactElement => {
     setSearch(value);
   };
 
+  const selectRepo = (name: string) => {
+    setSelRepo(name);
+    gitHubStore
+      .getReposBranchesList({
+        organizationName: search,
+        repoName: name,
+      })
+      .then((result) => {
+        log(result.data);
+      })
+      .catch(() => {
+        setError(true);
+      });
+  };
+
   log("Render");
 
   const elements = useMemo<JSX.Element[]>((): JSX.Element[] => {
     return repos.map((item: RepoItem) => {
       log("Array mapping");
-      return <RepoTile item={item} onClick={() => {}} key={item.id} />;
+      return (
+        <RepoTile
+          item={item}
+          onClick={() => {
+            selectRepo(item.name);
+          }}
+          key={item.id}
+        />
+      );
     });
   }, [repos]);
 

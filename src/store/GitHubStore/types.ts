@@ -8,6 +8,11 @@ export type GetNewRepoParams = {
   authToken: string;
 };
 
+export type GetReposBranchesListParams = {
+  organizationName: string;
+  repoName: string;
+};
+
 type Owner = {
   login: string;
   repos_url: string;
@@ -39,4 +44,6 @@ export interface IGitHubStore {
   createRepoAuthUser(
     params: GetNewRepoParams
   ): Promise<ApiResponse<RepoDetails, any>>;
+
+  //getReposBranchesList(params): Promise<ApiResponse<RepoItem[], any>>;
 }

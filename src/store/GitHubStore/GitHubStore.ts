@@ -5,12 +5,14 @@ import {
   RequestParams,
 } from "@shared/store/ApiStore/types";
 
+import log from "../../Logger/Logger";
 import {
   IGitHubStore,
   RepoItem,
   GetOrganizationReposListParams,
   GetNewRepoParams,
   RepoDetails,
+  GetReposBranchesListParams,
 } from "./types";
 
 const baseUrl: string = "https://api.github.com/";
@@ -30,6 +32,23 @@ export default class GitHubStore implements IGitHubStore {
       data: {
         per_page: "12",
       },
+    };
+    return await this.apiStore.request(params);
+    // Документация github: https://docs.github.com/en/rest/reference/repos#list-organization-repositories
+  }
+
+  async getReposBranchesList({
+    organizationName,
+    repoName,
+  }: GetReposBranchesListParams): Promise<ApiResponse<RepoItem[], any>> {
+    log(repoName);
+    const params: RequestParams<{}> = {
+      method: HTTPMethod.GET,
+      endpoint: `repos/${organizationName}/${repoName}/branches`,
+      headers: {
+        Accept: "application/vnd.github.v3+json",
+      },
+      data: {},
     };
     return await this.apiStore.request(params);
     // Документация github: https://docs.github.com/en/rest/reference/repos#list-organization-repositories
