@@ -1,4 +1,5 @@
 import React from "react";
+import "./styles.css";
 
 export type InputProps = {
   value: string;
@@ -27,4 +28,4 @@ const Input: React.FC<InputProps> = ({
   );
 };
 
-export default Input;
+export default React.memo(Input);

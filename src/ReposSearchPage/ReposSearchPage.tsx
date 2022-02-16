@@ -29,10 +29,10 @@ const ReposSearchPage: React.FC = (): ReactElement => {
         if (result.status === StatusHTTP.NotFound) {
           alert("Нет такой организации");
           setLoading(false);
-          return; //чтобы не сбрасывался текущий список репозиториев
+        } else {
+          setRepos(result.data);
+          setLoading(false);
         }
-        setRepos(result.data);
-        setLoading(false);
       })
       .catch(() => {
         setError(true);
@@ -40,7 +40,7 @@ const ReposSearchPage: React.FC = (): ReactElement => {
   };
 
   const searchRepos = (value: string) => {
-    setSearch((search) => value);
+    setSearch(value);
   };
 
   log("Render");
@@ -50,7 +50,6 @@ const ReposSearchPage: React.FC = (): ReactElement => {
     return <RepoTile item={item} onClick={() => {}} key={item.id} />;
   });
 
-  log(elements);
   return (
     <div className="container">
       <div className="search-form">

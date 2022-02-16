@@ -1,4 +1,5 @@
 import React from "react";
+import "./styles.css";
 
 export type ButtonProps = {
   onClick: (e: React.MouseEvent) => void;
@@ -21,4 +22,4 @@ const Button: React.FC<ButtonProps> = ({
   );
 };
 
-export default Button;
+export default React.memo(Button);

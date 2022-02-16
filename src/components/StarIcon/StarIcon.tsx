@@ -1,8 +1,11 @@
 import React from "react";
 
-export type StarIconProps = { currentColor: string };
+export type StarIconProps = { currentColor: string; className: string };
 
-const StarIcon: React.FC<StarIconProps> = ({ currentColor }: StarIconProps) => {
+const StarIcon: React.FC<StarIconProps> = ({
+  currentColor,
+  className,
+}: StarIconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,6 +13,7 @@ const StarIcon: React.FC<StarIconProps> = ({ currentColor }: StarIconProps) => {
       height="13"
       fill={currentColor}
       viewBox="0 0 14 13"
+      className={className}
     >
       <path
         fill={currentColor}

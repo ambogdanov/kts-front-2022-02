@@ -1,0 +1,17 @@
+.search-form__input{
+    width: 295px;
+    height: 50px;
+    color: var(--dark-gray-color);
+    border: var(--light-gray-color) solid 1px;
+    border-radius: 6px;
+    font-size: 14px;
+    padding-left: 12px;
+    outline: none;
+}
+.search-form__input:focus {
+    border: var(--red-color) solid 1px;
+    color: black;
+}
+.search-form__input:disabled{
+    background: #F9F9F9;
+}
