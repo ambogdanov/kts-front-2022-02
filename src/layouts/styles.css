@@ -1,3 +1,6 @@
+@import '~antd/dist/antd.css';
+
+
 * {
     margin: 0;
     padding: 0;
@@ -8,6 +11,17 @@
     --gray-color:#B6B6B6;
     --light-gray-color: #D9D9D9
 }
+body{
+    line-height: unset;
+}
+p {
+    margin: 0;
+    display: inline;
+}
+img{
+    vertical-align: unset;
+}
+
 
 .container{
     display: grid;

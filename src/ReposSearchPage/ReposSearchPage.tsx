@@ -10,6 +10,7 @@ import { StatusHTTP } from "@shared/store/ApiStore/types";
 import { RepoItem } from "@store/GitHubStore/types";
 
 import log from "../Logger/Logger";
+import RepoBranchesDrawer from "../RepoBranchesDrawer";
 
 const gitHubStore = new GitHubStore();
 
@@ -18,7 +19,8 @@ const ReposSearchPage: React.FC = (): ReactElement => {
   const [search, setSearch] = useState("google");
   const [isLoading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
-  const [selectedRepo, setSelRepo] = useState<string | null>(null);
+  const [selectedRepo, setSelRepo] = useState<string>("");
+  const [isDrawerVisible, setDrawerVisible] = useState(false);
 
   const loadRepos = () => {
     log("Request repo list");
@@ -47,17 +49,6 @@ const ReposSearchPage: React.FC = (): ReactElement => {
 
   const selectRepo = (name: string) => {
     setSelRepo(name);
-    gitHubStore
-      .getReposBranchesList({
-        organizationName: search,
-        repoName: name,
-      })
-      .then((result) => {
-        log(result.data);
-      })
-      .catch(() => {
-        setError(true);
-      });
   };
 
   log("Render");
@@ -70,6 +61,7 @@ const ReposSearchPage: React.FC = (): ReactElement => {
           item={item}
           onClick={() => {
             selectRepo(item.name);
+            setDrawerVisible(true);
           }}
           key={item.id}
         />
@@ -77,20 +69,33 @@ const ReposSearchPage: React.FC = (): ReactElement => {
     });
   }, [repos]);
 
+  let branchDrawer = (
+    <RepoBranchesDrawer
+      isVisible={isDrawerVisible}
+      selectedRepo={selectedRepo}
+      width={600}
+      orgName={search}
+      // onClose={setDrawerVisible(false)}
+    />
+  );
+
   return (
-    <div className="container">
-      <div className="search-form">
-        <Input
-          value={search}
-          placeholder={"Введите название компании"}
-          onChange={searchRepos}
-        />
-        <Button onClick={loadRepos} disabled={isLoading}>
-          <SearchIcon currentColor={"#fff"} />
-        </Button>
+    <>
+      {isDrawerVisible && branchDrawer}
+      <div className="container">
+        <div className="search-form">
+          <Input
+            value={search}
+            placeholder={"Введите название компании"}
+            onChange={searchRepos}
+          />
+          <Button onClick={loadRepos} disabled={isLoading}>
+            <SearchIcon currentColor={"#fff"} />
+          </Button>
+        </div>
+        {elements}
       </div>
-      {elements}
-    </div>
+    </>
   );
 };
 
