@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import GitHubStore from "@gitHubStore";
 import { Drawer } from "antd";
 
-import log from "../Logger/Logger";
+import log from "../utils/log/Logger";
 
 export type RepoBranchesDrawerProps = {
   selectedRepo: string;
@@ -34,6 +34,7 @@ const RepoBranchesDrawer = ({
 
   const onClose = () => {
     setVisible(false);
+    setBranches([]);
   };
 
   useEffect(() => {
@@ -58,9 +59,6 @@ const RepoBranchesDrawer = ({
 
   return (
     <>
-      {/*<Button type="primary" onClick={showDrawer}>*/}
-      {/*  Open*/}
-      {/*</Button>*/}
       <Drawer
         title={`${selectedRepo} branches:`}
         placement="right"

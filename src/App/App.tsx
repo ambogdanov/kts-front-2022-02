@@ -1,6 +1,6 @@
 import React from "react";
 
-import ReposSearchPage from "./ReposSearchPage";
+import ReposSearchPage from "../ReposSearchPage";
 
 function App() {
   return (

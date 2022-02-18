@@ -5,7 +5,7 @@ import Avatar from "@components/Avatar";
 import StarIcon from "@components/StarIcon";
 import { RepoItem } from "@store/GitHubStore/types";
 
-import log from "../../Logger/Logger";
+import log from "../../utils/log/Logger";
 
 export type RepoTileProps = {
   item: RepoItem;

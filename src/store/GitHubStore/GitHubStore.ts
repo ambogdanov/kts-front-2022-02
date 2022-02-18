@@ -5,7 +5,7 @@ import {
   RequestParams,
 } from "@shared/store/ApiStore/types";
 
-import log from "../../Logger/Logger";
+import log from "../../utils/log/Logger";
 import {
   IGitHubStore,
   RepoItem,

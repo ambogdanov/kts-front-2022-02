@@ -1,5 +1,5 @@
 import React, { ReactElement, useMemo, useState } from "react";
-import "../layouts/styles.css";
+import "@styles/styles.css";
 
 import Button from "@components/Button";
 import Input from "@components/Input";
@@ -9,8 +9,8 @@ import GitHubStore from "@gitHubStore";
 import { StatusHTTP } from "@shared/store/ApiStore/types";
 import { RepoItem } from "@store/GitHubStore/types";
 
-import log from "../Logger/Logger";
 import RepoBranchesDrawer from "../RepoBranchesDrawer";
+import log from "../utils/log/Logger";
 
 const gitHubStore = new GitHubStore();
 
