@@ -28,14 +28,15 @@ const RepoBranchesDrawer = ({
   orgName,
   isVisible,
   width,
+  onClose,
 }: RepoBranchesDrawerProps) => {
-  const [visible, setVisible] = useState(true);
+  //const [visible, setVisible] = useState(true);
   const [branches, setBranches] = useState<[]>([]);
 
-  const onClose = () => {
-    setVisible(false);
-    setBranches([]);
-  };
+  // const onClose1 = () => {
+  //   setVisible(false);
+  //   setBranches([]);
+  // };
 
   useEffect(() => {
     gitHubStore
@@ -47,8 +48,8 @@ const RepoBranchesDrawer = ({
         log(result.data);
         setBranches(result.data);
       });
-    setVisible(true);
-  }, [selectedRepo]);
+    //setVisible(true);
+  }, []);
 
   let elements = useMemo<JSX.Element[]>((): JSX.Element[] => {
     return branches.map((item: RepoBranches) => {
@@ -63,7 +64,7 @@ const RepoBranchesDrawer = ({
         title={`${selectedRepo} branches:`}
         placement="right"
         onClose={onClose}
-        visible={visible}
+        visible={isVisible}
         width={width}
       >
         <ul>{elements}</ul>

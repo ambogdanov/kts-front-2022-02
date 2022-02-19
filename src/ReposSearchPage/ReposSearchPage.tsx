@@ -75,7 +75,7 @@ const ReposSearchPage: React.FC = (): ReactElement => {
       selectedRepo={selectedRepo}
       width={600}
       orgName={search}
-      // onClose={setDrawerVisible(false)}
+      onClose={() => setDrawerVisible(false)}
     />
   );
 
