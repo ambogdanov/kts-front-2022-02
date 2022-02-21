@@ -1,5 +1,5 @@
 import React, { ReactElement, useMemo, useState } from "react";
-import "@styles/styles.css";
+import "@styles/styles.scss";
 
 import Button from "@components/Button";
 import Input from "@components/Input";
@@ -11,6 +11,7 @@ import { RepoItem } from "@store/GitHubStore/types";
 
 import RepoBranchesDrawer from "../RepoBranchesDrawer";
 import log from "../utils/log/Logger";
+import styles from "./RepoSearchPage.module.scss";
 
 const gitHubStore = new GitHubStore();
 
@@ -82,8 +83,8 @@ const ReposSearchPage: React.FC = (): ReactElement => {
   return (
     <>
       {isDrawerVisible && branchDrawer}
-      <div className="container">
-        <div className="search-form">
+      <div className={styles.container}>
+        <div className={styles.search_form}>
           <Input
             value={search}
             placeholder={"Введите название компании"}

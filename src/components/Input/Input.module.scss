@@ -1,0 +1,18 @@
+@import "../../styles/variables";
+.input{
+    width: 295px;
+    height: 50px;
+    color: $dark-gray-color;
+    border: $light-gray-color solid 1px;
+    border-radius: 6px;
+    font-size: 14px;
+    padding-left: 12px;
+    outline: none;
+}
+.input:focus {
+    border: $red-color solid 1px;
+    color: black;
+}
+.input:disabled{
+    background: #F9F9F9;
+}

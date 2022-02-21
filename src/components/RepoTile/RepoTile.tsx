@@ -1,11 +1,11 @@
 import React, { ReactElement } from "react";
-import "./styles.css";
 
 import Avatar from "@components/Avatar";
 import StarIcon from "@components/StarIcon";
 import { RepoItem } from "@store/GitHubStore/types";
 
 import log from "../../utils/log/Logger";
+import styles from "./Repotile.module.scss";
 
 export type RepoTileProps = {
   item: RepoItem;
@@ -23,19 +23,18 @@ const RepoTile: React.FC<RepoTileProps> = ({
     .slice(1, 3)
     .join(" ");
 
-  log("Render Repotile");
   return (
-    <div className="repo-item" onClick={onClick}>
+    <div className={styles.item} onClick={onClick}>
       <Avatar src={owner.avatar_url} alt={owner.login} />
-      <div className="repo-tem__title">
-        <p className="repo-item__name">{name}</p>
-        <a href={owner.html_url} className="repo-item__org_name">
+      <div className={styles.item__title}>
+        <p className={styles.item__name}>{name}</p>
+        <a href={owner.html_url} className={styles.item__org_name}>
           {owner.login}
         </a>
-        <div className="repo-item__bottom">
-          <StarIcon currentColor={"#ff5555"} className={"repo-item__star"} />
-          <div className="repo-item__like">{stargazers_count}</div>
-          <div className="repo-item__update"> Updated {date}</div>
+        <div className={styles.item__bottom}>
+          <StarIcon currentColor={"#ff5555"} className={styles.item__star} />
+          <div className={styles.item__like}>{stargazers_count}</div>
+          <div className={styles.item__update}> Updated {date}</div>
         </div>
       </div>
     </div>
