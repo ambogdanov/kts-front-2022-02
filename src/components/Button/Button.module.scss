@@ -5,11 +5,11 @@
     background: $red-color;
     border-radius: 6px;
     border: none;
-}
-.button:disabled{
-    background: $light-gray-color;
-}
-.button:hover{
-    cursor: pointer;
-    opacity: 70%;
+    &:disabled{
+        background: $light-gray-color;
+    }
+    &:hover{
+        cursor: pointer;
+        opacity: 70%;
+    }
 }

@@ -4,7 +4,6 @@ import Avatar from "@components/Avatar";
 import StarIcon from "@components/StarIcon";
 import { RepoItem } from "@store/GitHubStore/types";
 
-import log from "../../utils/log/Logger";
 import styles from "./Repotile.module.scss";
 
 export type RepoTileProps = {
@@ -32,8 +31,10 @@ const RepoTile: React.FC<RepoTileProps> = ({
           {owner.login}
         </a>
         <div className={styles.item__bottom}>
-          <StarIcon currentColor={"#ff5555"} className={styles.item__star} />
-          <div className={styles.item__like}>{stargazers_count}</div>
+          <div className={styles.item__like}>
+            <StarIcon currentColor={"#ff5555"} />
+            <p>{stargazers_count}</p>
+          </div>
           <div className={styles.item__update}> Updated {date}</div>
         </div>
       </div>

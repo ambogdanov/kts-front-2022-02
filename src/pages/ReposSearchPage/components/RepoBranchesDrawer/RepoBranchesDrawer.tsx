@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 
-import GitHubStore from "@gitHubStore";
+import log from "@utils/log/Logger";
 import { Drawer } from "antd";
 
-import log from "../utils/log/Logger";
+import { gitHubStore } from "../../ReposSearchPage";
 
 export type RepoBranchesDrawerProps = {
   selectedRepo: string;
@@ -21,22 +21,14 @@ type RepoBranches = {
   };
 };
 
-const gitHubStore = new GitHubStore();
-
-const RepoBranchesDrawer = ({
+const RepoBranchesDrawer: React.FC<RepoBranchesDrawerProps> = ({
   selectedRepo,
   orgName,
   isVisible,
   width,
   onClose,
 }: RepoBranchesDrawerProps) => {
-  //const [visible, setVisible] = useState(true);
   const [branches, setBranches] = useState<[]>([]);
-
-  // const onClose1 = () => {
-  //   setVisible(false);
-  //   setBranches([]);
-  // };
 
   useEffect(() => {
     gitHubStore
@@ -48,10 +40,9 @@ const RepoBranchesDrawer = ({
         log(result.data);
         setBranches(result.data);
       });
-    //setVisible(true);
   }, []);
 
-  let elements = useMemo<JSX.Element[]>((): JSX.Element[] => {
+  const elements = useMemo(() => {
     return branches.map((item: RepoBranches) => {
       log("Branches mapping");
       return <li key={item.commit.sha}>{item.name}</li>;
@@ -59,18 +50,16 @@ const RepoBranchesDrawer = ({
   }, [branches]);
 
   return (
-    <>
-      <Drawer
-        title={`${selectedRepo} branches:`}
-        placement="right"
-        onClose={onClose}
-        visible={isVisible}
-        width={width}
-      >
-        <ul>{elements}</ul>
-      </Drawer>
-    </>
+    <Drawer
+      title={`${selectedRepo} branches:`}
+      placement="right"
+      onClose={onClose}
+      visible={isVisible}
+      width={width}
+    >
+      <ul>{elements}</ul>
+    </Drawer>
   );
 };
 
-export default RepoBranchesDrawer;
+export default React.memo(RepoBranchesDrawer);

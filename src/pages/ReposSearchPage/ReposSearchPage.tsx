@@ -1,30 +1,30 @@
-import React, { ReactElement, useMemo, useState } from "react";
+import React, { ReactElement, useCallback, useMemo, useState } from "react";
 import "@styles/styles.scss";
 
 import Button from "@components/Button";
 import Input from "@components/Input";
 import RepoTile from "@components/RepoTile";
 import SearchIcon from "@components/SearchIcon";
+import Spinner from "@components/Spinner";
 import GitHubStore from "@gitHubStore";
 import { StatusHTTP } from "@shared/store/ApiStore/types";
 import { RepoItem } from "@store/GitHubStore/types";
+import log from "@utils/log/Logger";
 
-import RepoBranchesDrawer from "../RepoBranchesDrawer";
-import log from "../utils/log/Logger";
+import RepoBranchesDrawer from "./components/RepoBranchesDrawer";
 import styles from "./RepoSearchPage.module.scss";
 
 const gitHubStore = new GitHubStore();
 
 const ReposSearchPage: React.FC = (): ReactElement => {
   const [repos, setRepos] = useState<RepoItem[]>([]);
-  const [search, setSearch] = useState("google");
-  const [isLoading, setLoading] = useState(false);
-  const [isError, setError] = useState(false);
+  const [search, setSearch] = useState<string>("google");
+  const [isLoading, setLoading] = useState<boolean>(false);
+  const [isError, setError] = useState<boolean>(false);
   const [selectedRepo, setSelRepo] = useState<string>("");
-  const [isDrawerVisible, setDrawerVisible] = useState(false);
+  const [isDrawerVisible, setDrawerVisible] = useState<boolean>(false);
 
-  const loadRepos = () => {
-    log("Request repo list");
+  const loadRepos = useCallback(() => {
     setLoading(true);
     gitHubStore
       .getOrganizationReposList({
@@ -42,7 +42,8 @@ const ReposSearchPage: React.FC = (): ReactElement => {
       .catch(() => {
         setError(true);
       });
-  };
+    log("GET Repos from API");
+  }, []);
 
   const searchRepos = (value: string) => {
     setSearch(value);
@@ -52,11 +53,8 @@ const ReposSearchPage: React.FC = (): ReactElement => {
     setSelRepo(name);
   };
 
-  log("Render");
-
   const elements = useMemo<JSX.Element[]>((): JSX.Element[] => {
     return repos.map((item: RepoItem) => {
-      log("Array mapping");
       return (
         <RepoTile
           item={item}
@@ -70,7 +68,7 @@ const ReposSearchPage: React.FC = (): ReactElement => {
     });
   }, [repos]);
 
-  let branchDrawer = (
+  const branchDrawer = (
     <RepoBranchesDrawer
       isVisible={isDrawerVisible}
       selectedRepo={selectedRepo}
@@ -94,10 +92,12 @@ const ReposSearchPage: React.FC = (): ReactElement => {
             <SearchIcon currentColor={"#fff"} />
           </Button>
         </div>
-        {elements}
+        {isLoading && <Spinner />}
+        {!isLoading && elements}
       </div>
     </>
   );
 };
 
 export default ReposSearchPage;
+export { gitHubStore };

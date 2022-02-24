@@ -1,7 +1,5 @@
 import React from "react";
 
-import log from "@utils/log/Logger";
-
 import styles from "./Button.module.scss";
 
 export type ButtonProps = {
@@ -14,7 +12,6 @@ const Button: React.FC<ButtonProps> = ({
   disabled,
   children,
 }: ButtonProps) => {
-  log(styles.button);
   return (
     <button className={styles.button} onClick={onClick} disabled={disabled}>
       {children}

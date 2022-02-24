@@ -17,15 +17,13 @@ const Input: React.FC<InputProps> = ({
     onChange(e.target.value);
   };
   return (
-    <>
-      <input
-        type="text"
-        className={styles.input}
-        placeholder={placeholder}
-        value={value}
-        onChange={onInputChange}
-      />
-    </>
+    <input
+      type="text"
+      className={styles.input}
+      placeholder={placeholder}
+      value={value}
+      onChange={onInputChange}
+    />
   );
 };
 
