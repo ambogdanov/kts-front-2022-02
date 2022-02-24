@@ -1,0 +1,47 @@
+@import '../../node_modules/antd/dist/antd.css';
+@import './variables.css';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+body{
+    line-height: unset;
+}
+p {
+    margin: 0;
+    display: inline;
+}
+img{
+    vertical-align: unset;
+}
+
+
+.container{
+    display: grid;
+    grid-row-gap: 16px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+    width: 397px;
+    height: 1000px;
+    overflow: auto;
+}
+.container:first-child {
+    grid-row-gap: 20px;
+}
+
+.search-form {
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.repos-list {
+    overflow: hidden;
+}
+
+
+

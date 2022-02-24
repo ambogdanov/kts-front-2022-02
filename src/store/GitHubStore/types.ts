@@ -1,34 +1,49 @@
-import {ApiResponse} from "@shared/store/ApiStore/types";
+import { ApiResponse } from "@shared/store/ApiStore/types";
 export type GetOrganizationReposListParams = {
-    organizationName: string
-}
+  organizationName: string;
+};
 export type GetNewRepoParams = {
-    name:string,
-    isPrivate: true,
-    authToken: string
-}
+  name: string;
+  isPrivate: true;
+  authToken: string;
+};
+
+export type GetReposBranchesListParams = {
+  organizationName: string;
+  repoName: string;
+};
 
 type Owner = {
-    login:string,
-    repos_url: string,
-    organizations_url: string
-    updated_at: string,
-}
+  login: string;
+  repos_url: string;
+  organizations_url: string;
+  updated_at: string;
+  avatar_url: string;
+  html_url: string;
+};
 
-export type RepoItem ={
-    id: number,
-    name: string,
-    owner: Owner,
-}
+export type RepoItem = {
+  id: number;
+  name: string;
+  owner: Owner;
+  stargazers_count: number;
+  updated_at: string;
+};
 
 export type RepoDetails = {
-    default_branch: string,
-    full_name: string,
-    html_url: string,
-    name:string
-    owner: Owner,
-}
+  default_branch: string;
+  full_name: string;
+  html_url: string;
+  name: string;
+  owner: Owner;
+};
 export interface IGitHubStore {
-    getOrganizationReposList(params: GetOrganizationReposListParams): Promise<ApiResponse<RepoItem[], any>>;
-    createRepoAuthUser(params:GetNewRepoParams):Promise<ApiResponse<RepoDetails, any>>;
+  getOrganizationReposList(
+    params: GetOrganizationReposListParams
+  ): Promise<ApiResponse<RepoItem[], any>>;
+  createRepoAuthUser(
+    params: GetNewRepoParams
+  ): Promise<ApiResponse<RepoDetails, any>>;
+
+  //getReposBranchesList(params): Promise<ApiResponse<RepoItem[], any>>;
 }
