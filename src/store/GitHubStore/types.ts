@@ -1,6 +1,8 @@
 import { ApiResponse } from "@shared/store/ApiStore/types";
 export type GetOrganizationReposListParams = {
   organizationName: string;
+  per_page: number;
+  page: number;
 };
 export type GetNewRepoParams = {
   name: string;
@@ -9,8 +11,8 @@ export type GetNewRepoParams = {
 };
 
 export type GetReposBranchesListParams = {
-  organizationName: string;
-  repoName: string;
+  organizationName: string | undefined;
+  repoName: string | undefined;
 };
 
 type Owner = {

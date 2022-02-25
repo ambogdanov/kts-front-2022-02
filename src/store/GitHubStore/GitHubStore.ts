@@ -22,6 +22,8 @@ export default class GitHubStore implements IGitHubStore {
 
   async getOrganizationReposList({
     organizationName,
+    per_page,
+    page,
   }: GetOrganizationReposListParams): Promise<ApiResponse<RepoItem[], any>> {
     const params: RequestParams<{}> = {
       method: HTTPMethod.GET,
@@ -30,7 +32,8 @@ export default class GitHubStore implements IGitHubStore {
         Accept: "application/vnd.github.v3+json",
       },
       data: {
-        per_page: "12",
+        per_page: { per_page },
+        page: { page },
       },
     };
     return await this.apiStore.request(params);

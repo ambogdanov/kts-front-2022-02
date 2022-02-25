@@ -1,15 +1,16 @@
 import React, { useEffect, useMemo, useState } from "react";
 
+import { StatusHTTP } from "@shared/store/ApiStore/types";
+import { GetReposBranchesListParams } from "@store/GitHubStore/types";
 import log from "@utils/log/Logger";
 import { Drawer } from "antd";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { gitHubStore } from "../../ReposSearchPage";
 
 export type RepoBranchesDrawerProps = {
-  selectedRepo: string;
-  orgName: string;
   isVisible: boolean;
-  width: number;
+  width?: number;
   onClose?: () => void;
 };
 
@@ -21,26 +22,31 @@ type RepoBranches = {
   };
 };
 
-const RepoBranchesDrawer: React.FC<RepoBranchesDrawerProps> = ({
-  selectedRepo,
-  orgName,
+export const RepoBranchesDrawer: React.FC<RepoBranchesDrawerProps> = ({
   isVisible,
   width,
   onClose,
 }: RepoBranchesDrawerProps) => {
   const [branches, setBranches] = useState<[]>([]);
-
+  const [visible, setVisible] = useState<boolean>(false);
+  const { organizationName, repoName } =
+    useParams<GetReposBranchesListParams>();
+  let navigate = useNavigate();
+  function handleClick() {
+    navigate("/repos");
+  }
   useEffect(() => {
     gitHubStore
-      .getReposBranchesList({
-        organizationName: orgName,
-        repoName: selectedRepo,
-      })
+      .getReposBranchesList({ organizationName, repoName })
       .then((result) => {
-        log(result.data);
-        setBranches(result.data);
+        if (result.status === StatusHTTP.NotFound) {
+          handleClick();
+        } else {
+          setBranches(result.data);
+          setVisible(isVisible);
+        }
       });
-  }, []);
+  }, [repoName, isVisible]);
 
   const elements = useMemo(() => {
     return branches.map((item: RepoBranches) => {
@@ -51,10 +57,10 @@ const RepoBranchesDrawer: React.FC<RepoBranchesDrawerProps> = ({
 
   return (
     <Drawer
-      title={`${selectedRepo} branches:`}
+      title={`${repoName} branches:`}
       placement="right"
-      onClose={onClose}
-      visible={isVisible}
+      onClose={handleClick}
+      visible={visible}
       width={width}
     >
       <ul>{elements}</ul>
