@@ -32,8 +32,8 @@ export default class GitHubStore implements IGitHubStore {
         Accept: "application/vnd.github.v3+json",
       },
       data: {
-        per_page: { per_page },
-        page: { page },
+        per_page: per_page,
+        page: page,
       },
     };
     return await this.apiStore.request(params);

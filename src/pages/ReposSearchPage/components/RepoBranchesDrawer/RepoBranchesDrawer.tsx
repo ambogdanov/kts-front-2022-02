@@ -1,12 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 
+import { gitHubStore } from "@app/App";
 import { StatusHTTP } from "@shared/store/ApiStore/types";
 import { GetReposBranchesListParams } from "@store/GitHubStore/types";
 import log from "@utils/log/Logger";
 import { Drawer } from "antd";
 import { useParams, useNavigate } from "react-router-dom";
-
-import { gitHubStore } from "../../ReposSearchPage";
 
 export type RepoBranchesDrawerProps = {
   isVisible: boolean;
@@ -33,7 +32,7 @@ export const RepoBranchesDrawer: React.FC<RepoBranchesDrawerProps> = ({
     useParams<GetReposBranchesListParams>();
   let navigate = useNavigate();
   function handleClick() {
-    navigate("/repos");
+    navigate("/repos", { replace: true });
   }
   useEffect(() => {
     gitHubStore

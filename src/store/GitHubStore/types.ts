@@ -46,6 +46,4 @@ export interface IGitHubStore {
   createRepoAuthUser(
     params: GetNewRepoParams
   ): Promise<ApiResponse<RepoDetails, any>>;
-
-  //getReposBranchesList(params): Promise<ApiResponse<RepoItem[], any>>;
 }
