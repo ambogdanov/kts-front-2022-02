@@ -66,8 +66,12 @@ const ReposSearchPage: React.FC = (): ReactElement => {
       loadRepos({ page: 1, per_page, organizationName: inputValue });
     }
   };
-  const loadNextPage = (e: any) => {
-    if (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
+  const loadNextPage = (event: React.UIEvent<HTMLDivElement>) => {
+    if (
+      !isLoading &&
+      event.currentTarget.scrollHeight - event.currentTarget.scrollTop ===
+        event.currentTarget.clientHeight
+    ) {
       setPage((page) => page + 1);
       loadRepos({
         page: page + 1,
@@ -97,8 +101,8 @@ const ReposSearchPage: React.FC = (): ReactElement => {
             type={"info"}
           />
         )}
-        {isLoading && <Spinner />}
         {!isError && elements}
+        {isLoading && <Spinner />}
       </div>
       <Outlet />
     </>
