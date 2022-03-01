@@ -31,9 +31,9 @@ export const RepoBranchesDrawer: React.FC<RepoBranchesDrawerProps> = ({
   const { organizationName, repoName } =
     useParams<GetReposBranchesListParams>();
   let navigate = useNavigate();
-  function handleClick() {
+  const handleClick = () => {
     navigate("/repos", { replace: true });
-  }
+  };
   useEffect(() => {
     gitHubStore
       .getReposBranchesList({ organizationName, repoName })

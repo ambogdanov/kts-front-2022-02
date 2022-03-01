@@ -27,9 +27,9 @@ const ReposSearchPage: React.FC = (): ReactElement => {
   const navigate = useNavigate();
   const per_page = 12;
 
-  function goToBranchDrawer(repoOwner: string, repo: string) {
+  const goToBranchDrawer = (repoOwner: string, repo: string) => {
     navigate(`/repos/${repoOwner}/${repo}`);
-  }
+  };
 
   const loadRepos = (params: GetOrganizationReposListParams) => {
     load({
