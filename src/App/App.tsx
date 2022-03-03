@@ -38,6 +38,9 @@ function App() {
     per_page,
     organizationName,
   }: GetOrganizationReposListParams) => {
+    if (page === 1) {
+      setList((list) => []);
+    }
     setLoading(true);
     gitHubStore
       .getOrganizationReposList({
