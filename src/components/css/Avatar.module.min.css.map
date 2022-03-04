@@ -1,0 +1,10 @@
+{
+    "version": 3,
+    "mappings": "AACA,AAAA,SAAS,AAAC,CACN,KAAK,CAAE,IAAI,CACd,AAED,AAAA,WAAW,AAAC,CACR,KAAK,CAAE,IAAI,CACX,MAAM,CAAE,IAAI,CACZ,aAAa,CAAE,GAAG,CAClB,MAAM,CAAE,aAAa,CACrB,WAAW,CAAE,IAAI,CACjB,UAAU,CAAE,MAAM,CAClB,QAAQ,CAAE,MAAM,CAChB,KAAK,CAAE,KAAK,CACZ,SAAS,CAAE,IAAI,CACf,WAAW,CAAE,IAAI,CACpB,AAED,AAAA,OAAO,AAAC,CACJ,gBAAgB,CCnBR,IAAO,CDoBlB",
+    "sources": [
+        "../Avatar/Avatar.module.scss",
+        "../../styles/variables.scss"
+    ],
+    "names": [],
+    "file": "Avatar.module.min.css"
+}

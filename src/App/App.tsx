@@ -9,6 +9,7 @@ import {
   RepoItem,
 } from "@store/GitHubStore/types";
 import log from "@utils/log/Logger";
+import { useLocalStore } from "@utils/log/useLocalStore";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 
 type ReposContextT = {
@@ -26,9 +27,9 @@ const ReposContext = createContext<ReposContextT>({
 });
 export const useReposContext = () => useContext(ReposContext);
 const Provider = ReposContext.Provider;
-const gitHubStore = new GitHubStore();
 
 function App() {
+  const gitHubStore = useLocalStore(() => new GitHubStore());
   const [list, setList] = useState<RepoItem[]>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [isError, setError] = useState<boolean>(false);

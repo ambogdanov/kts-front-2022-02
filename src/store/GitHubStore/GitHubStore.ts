@@ -4,6 +4,9 @@ import {
   HTTPMethod,
   RequestParams,
 } from "@shared/store/ApiStore/types";
+import { Meta } from "@utils/log/meta";
+import { ILocalStore } from "@utils/log/useLocalStore";
+import { makeObservable } from "mobx";
 
 import log from "../../utils/log/Logger";
 import {
@@ -17,8 +20,19 @@ import {
 
 const baseUrl: string = "https://api.github.com/";
 
-export default class GitHubStore implements IGitHubStore {
-  private readonly apiStore = new ApiStore(baseUrl);
+export default class GitHubStore implements IGitHubStore, ILocalStore {
+  destroy(): void {
+    //TODO
+    throw new Error("Method not implemented.");
+  }
+
+  private _list: RepoItem[] = [];
+  private _meta: Meta = Meta.initial;
+  private readonly _apiStore = new ApiStore(baseUrl);
+
+  constructor() {
+    makeObservable(this, )
+  }
 
   async getOrganizationReposList({
     organizationName,
@@ -36,7 +50,7 @@ export default class GitHubStore implements IGitHubStore {
         page: page,
       },
     };
-    return await this.apiStore.request(params);
+    return await this._apiStore.request(params);
     // Документация github: https://docs.github.com/en/rest/reference/repos#list-organization-repositories
   }
 
@@ -53,7 +67,7 @@ export default class GitHubStore implements IGitHubStore {
       },
       data: {},
     };
-    return await this.apiStore.request(params);
+    return await this._apiStore.request(params);
     // Документация github: https://docs.github.com/en/rest/reference/repos#list-organization-repositories
   }
 
@@ -75,7 +89,7 @@ export default class GitHubStore implements IGitHubStore {
         Authorization: "token OAUTH-TOKEN",
       },
     };
-    return await this.apiStore.request(params);
+    return await this._apiStore.request(params);
     // Документация github: https://docs.github.com/en/rest/reference/repos#create-a-repository-for-the-authenticated-user
   }
 }
