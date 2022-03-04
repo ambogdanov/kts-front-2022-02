@@ -9,7 +9,9 @@
       "@gitHubStore": ["src/store/GitHubStore/"],
       "@apiStore": ["src/shared/store/ApiStore/"],
       "@store/*": ["src/store/*"],
-      "@shared/*": ["src/shared/*"]
+      "@shared/*": ["src/shared/*"],
+      "@pages/*": ["src/pages/*"],
+      "@app/*": ["src/App/*"]
     }
   }
 }

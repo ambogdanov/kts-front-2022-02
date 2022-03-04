@@ -1,0 +1,5 @@
+@mixin square($side, $round: none) {
+  width: $side;
+  height: $side;
+  border-radius: $round
+}

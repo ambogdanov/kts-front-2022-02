@@ -1,5 +1,6 @@
 import React from "react";
-import "./styles.css";
+
+import styles from "./Button.module.scss";
 
 export type ButtonProps = {
   onClick: (e: React.MouseEvent) => void;
@@ -12,11 +13,7 @@ const Button: React.FC<ButtonProps> = ({
   children,
 }: ButtonProps) => {
   return (
-    <button
-      className="search-form__button"
-      onClick={onClick}
-      disabled={disabled}
-    >
+    <button className={styles.button} onClick={onClick} disabled={disabled}>
       {children}
     </button>
   );

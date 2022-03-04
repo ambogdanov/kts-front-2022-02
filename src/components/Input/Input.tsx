@@ -1,5 +1,6 @@
 import React from "react";
-import "./styles.css";
+
+import styles from "./Input.module.scss";
 
 export type InputProps = {
   value: string;
@@ -16,15 +17,13 @@ const Input: React.FC<InputProps> = ({
     onChange(e.target.value);
   };
   return (
-    <>
-      <input
-        type="text"
-        className="search-form__input"
-        placeholder={placeholder}
-        value={value}
-        onChange={onInputChange}
-      />
-    </>
+    <input
+      type="text"
+      className={styles.input}
+      placeholder={placeholder}
+      value={value}
+      onChange={onInputChange}
+    />
   );
 };
 
