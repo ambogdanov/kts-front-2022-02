@@ -1,3 +1,3 @@
-import AlertMessage from "@components/Alert/AlertMessage";
+import AlertMessage from "./AlertMessage";
 
 export default AlertMessage;

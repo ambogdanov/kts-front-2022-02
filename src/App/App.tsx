@@ -70,11 +70,10 @@ function App() {
           <Routes>
             <Route path="/repos" element={<ReposSearchPage />}>
               <Route
-                path=":organizationName/:repoName"
+                path="/repos/:organizationName/:repoName"
                 element={<RepoBranchesDrawer width={600} isVisible={true} />}
               />
             </Route>
-
             <Route path={"*"} element={<Navigate to="/repos" replace />} />
           </Routes>
         </BrowserRouter>

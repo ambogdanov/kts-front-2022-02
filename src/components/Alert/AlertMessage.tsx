@@ -2,10 +2,17 @@ import React from "react";
 
 import { Alert } from "antd";
 
+export enum AlertType {
+  success = "success",
+  info = "info",
+  warning = "warning",
+  error = "error",
+}
+
 export type AlertProps = {
   message: string;
   description: string;
-  type: "success" | "info" | "warning" | "error";
+  type: AlertType;
 };
 
 const AlertMessage: React.FC<AlertProps> = ({
@@ -16,4 +23,4 @@ const AlertMessage: React.FC<AlertProps> = ({
   return <Alert message={message} description={description} type={type} />;
 };
 
-export default AlertMessage;
+export default React.memo(AlertMessage);

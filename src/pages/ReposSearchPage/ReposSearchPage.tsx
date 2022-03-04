@@ -1,9 +1,10 @@
-import React, { ReactElement, useMemo, useState } from "react";
+import React, { ReactElement, useCallback, useMemo, useState } from "react";
 
 import "@styles/styles.scss";
 
 import { useReposContext } from "@app/App";
 import AlertMessage from "@components/Alert";
+import { AlertType } from "@components/Alert/AlertMessage";
 import Button from "@components/Button";
 import Input from "@components/Input";
 import RepoTile from "@components/RepoTile";
@@ -57,7 +58,7 @@ const ReposSearchPage: React.FC = (): ReactElement => {
     });
   }, [list]);
 
-  const loadFirstPage = () => {
+  const loadFirstPage = useCallback(() => {
     if (inputValue === searchValue) {
       return;
     } else {
@@ -65,21 +66,25 @@ const ReposSearchPage: React.FC = (): ReactElement => {
       setPage(1);
       loadRepos({ page: 1, per_page, organizationName: inputValue });
     }
-  };
-  const loadNextPage = (event: React.UIEvent<HTMLDivElement>) => {
-    if (
-      !isLoading &&
-      event.currentTarget.scrollHeight - event.currentTarget.scrollTop ===
-        event.currentTarget.clientHeight
-    ) {
-      setPage((page) => page + 1);
-      loadRepos({
-        page: page + 1,
-        per_page,
-        organizationName: inputValue,
-      });
-    }
-  };
+  }, [inputValue, searchValue, per_page]);
+
+  const loadNextPage = useCallback(
+    (event: React.UIEvent<HTMLDivElement>) => {
+      if (
+        !isLoading &&
+        event.currentTarget.scrollHeight - event.currentTarget.scrollTop ===
+          event.currentTarget.clientHeight
+      ) {
+        setPage((page) => page + 1);
+        loadRepos({
+          page: page + 1,
+          per_page,
+          organizationName: searchValue,
+        });
+      }
+    },
+    [isLoading, page, searchValue, per_page]
+  );
 
   return (
     <>
@@ -96,9 +101,9 @@ const ReposSearchPage: React.FC = (): ReactElement => {
         </div>
         {isError && (
           <AlertMessage
-            message={"Организация не найдена"}
-            description={"Попробуйте изменить праметры поиска"}
-            type={"info"}
+            message="Организация не найдена"
+            description="Попробуйте изменить праметры поиска"
+            type={AlertType.info}
           />
         )}
         {!isError && elements}

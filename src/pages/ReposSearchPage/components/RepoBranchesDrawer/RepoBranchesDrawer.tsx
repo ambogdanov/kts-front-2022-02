@@ -31,9 +31,11 @@ export const RepoBranchesDrawer: React.FC<RepoBranchesDrawerProps> = ({
   const { organizationName, repoName } =
     useParams<GetReposBranchesListParams>();
   let navigate = useNavigate();
+
   const handleClick = () => {
     navigate("/repos", { replace: true });
   };
+
   useEffect(() => {
     gitHubStore
       .getReposBranchesList({ organizationName, repoName })
@@ -45,7 +47,7 @@ export const RepoBranchesDrawer: React.FC<RepoBranchesDrawerProps> = ({
           setVisible(isVisible);
         }
       });
-  }, [repoName, isVisible]);
+  }, [repoName, isVisible, organizationName]);
 
   const elements = useMemo(() => {
     return branches.map((item: RepoBranches) => {
