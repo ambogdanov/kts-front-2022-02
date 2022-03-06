@@ -6,7 +6,7 @@ import RepoBranchesStore from "@store/RepoBranchesStore";
 import log from "@utils/log/Logger";
 import { useLocalStore } from "@utils/useLocalStore";
 import { Drawer } from "antd";
-import { observer, Observer } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 import { useParams, useNavigate } from "react-router-dom";
 
 export type RepoBranchesDrawerProps = {
@@ -26,10 +26,6 @@ export const RepoBranchesDrawer: React.FC<RepoBranchesDrawerProps> = ({
     useParams<GetReposBranchesListParams>();
   let navigate = useNavigate();
 
-  const handleClick = () => {
-    navigate("/repos", { replace: true });
-  };
-
   useEffect(() => {
     repoBranchesStore
       .getReposBranchesList({ organizationName, repoName })
@@ -42,7 +38,7 @@ export const RepoBranchesDrawer: React.FC<RepoBranchesDrawerProps> = ({
     <Drawer
       title={`${repoName} branches:`}
       placement="right"
-      onClose={handleClick}
+      onClose={() => navigate("/repos", { replace: true })}
       visible={visible}
       width={width}
     >

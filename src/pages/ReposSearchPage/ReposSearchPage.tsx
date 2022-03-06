@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback, useMemo, useState } from "react";
+import React, { ReactElement, useCallback, useMemo } from "react";
 
 import "@styles/styles.scss";
 
@@ -29,24 +29,18 @@ const ReposSearchPage: React.FC = (): ReactElement => {
   let isLoading: boolean = reposListStore.meta === Meta.loading;
   let isError: boolean = reposListStore.meta === Meta.error;
 
-  // TODO Реализовать бесконечный скролл через стор
-  // const loadNextPage = useCallback(
-  //   (event: React.UIEvent<HTMLDivElement>) => {
-  //     if (
-  //       !(reposListStore.meta === Meta.loading) &&
-  //       event.currentTarget.scrollHeight - event.currentTarget.scrollTop ===
-  //         event.currentTarget.clientHeight
-  //     ) {
-  //       setPage((page) => page + 1);
-  //       loadRepos({
-  //         page: page + 1,
-  //         per_page,
-  //         organizationName: searchValue,
-  //       });
-  //     }
-  //   },
-  //   [reposListStore.meta, page, searchValue, per_page]
-  // );
+  const loadNextPage = useCallback(
+    (event: React.UIEvent<HTMLDivElement>) => {
+      if (
+        !isLoading &&
+        event.currentTarget.scrollHeight - event.currentTarget.scrollTop ===
+          event.currentTarget.clientHeight
+      ) {
+        reposListStore.loadNextPage();
+      }
+    },
+    [isLoading, reposListStore.loadNextPage]
+  );
 
   log(`render RepoPageList`);
 
@@ -67,7 +61,7 @@ const ReposSearchPage: React.FC = (): ReactElement => {
 
   return (
     <>
-      <div className={styles.container}>
+      <div className={styles.container} onScroll={loadNextPage}>
         <div className={styles.search_form}>
           <Input
             value={reposListStore.inputValue}

@@ -13,7 +13,7 @@ export const normalizeCollection = <K extends string | number, T>(
   elements: T[],
   getKeyForElement: (element: T) => K
 ): CollectionModel<K, T> => {
-  const collection: CollectionModel<K, T> = getInitialCollectionModel();
+  const collection: CollectionModel<K, T> = { ...prevList };
   elements.forEach((el) => {
     const id = getKeyForElement(el);
     collection.order.push(id);

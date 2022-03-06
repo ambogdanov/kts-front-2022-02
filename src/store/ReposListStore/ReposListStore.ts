@@ -68,6 +68,7 @@ export default class ReposListStore implements IReposListStore, ILocalStore {
       inputValue: computed,
       _getOrganizationReposList: action,
       destroy: action,
+      loadNextPage: action,
       loadFirstPage: action.bound,
       setInputValue: action.bound,
     });
@@ -124,6 +125,7 @@ export default class ReposListStore implements IReposListStore, ILocalStore {
           list,
           (listItem) => listItem.id
         );
+
         this._meta = Meta.success;
         return;
       } catch (e) {
@@ -149,5 +151,13 @@ export default class ReposListStore implements IReposListStore, ILocalStore {
         organizationName: this._searchValue,
       });
     }
+  }
+  loadNextPage(): void {
+    this._page++;
+    this._getOrganizationReposList({
+      page: this._page,
+      per_page: this._perPage,
+      organizationName: this._searchValue,
+    });
   }
 }
