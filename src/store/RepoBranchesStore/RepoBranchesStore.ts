@@ -5,6 +5,7 @@ import {
   RepoBranchesApi,
   RepoBranchesModel,
 } from "@store/models/gitHub/repoBranches";
+import rootStore from "@store/RootStore";
 import log from "@utils/log/Logger";
 import { Meta } from "@utils/meta";
 import { ILocalStore } from "@utils/useLocalStore";
@@ -21,9 +22,6 @@ import {
   IRepoBranchesStore,
   PrivateFields,
 } from "./types";
-
-const baseUrl: string = "https://api.github.com/";
-
 export default class RepoBranchesStore
   implements IRepoBranchesStore, ILocalStore
 {
@@ -34,7 +32,7 @@ export default class RepoBranchesStore
 
   private _list: RepoBranchesModel[] = [];
   private _meta: Meta = Meta.initial;
-  private readonly _apiStore = new ApiStore(baseUrl);
+  private readonly _apiStore = rootStore.apiStore;
 
   constructor() {
     makeObservable<RepoBranchesStore, PrivateFields>(this, {

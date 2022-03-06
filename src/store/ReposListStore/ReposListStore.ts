@@ -1,4 +1,3 @@
-import ApiStore from "@apiStore";
 import { HTTPMethod, RequestParams } from "@shared/store/ApiStore/types";
 import { GetOrganizationReposListParams } from "@store/GitHubStore/types";
 import {
@@ -12,10 +11,10 @@ import {
   linearizeCollection,
   normalizeCollection,
 } from "@store/models/shared/collections";
+import rootStore from "@store/RootStore";
 import { Meta } from "@utils/meta";
 import { ILocalStore } from "@utils/useLocalStore";
 import {
-  set,
   action,
   computed,
   makeObservable,
@@ -25,15 +24,19 @@ import {
 
 import log from "../../utils/log/Logger";
 
-const baseUrl: string = "https://api.github.com/";
-
 export interface IReposListStore {
-  getOrganizationReposList(
+  _getOrganizationReposList(
     params: GetOrganizationReposListParams
   ): Promise<void>;
 }
 
-type PrivateFields = "_list" | "_meta";
+type PrivateFields =
+  | "_list"
+  | "_meta"
+  | "_perPage"
+  | "_searchValue"
+  | "_inputValue"
+  | "_page";
 
 export default class ReposListStore implements IReposListStore, ILocalStore {
   destroy(): void {
@@ -46,20 +49,47 @@ export default class ReposListStore implements IReposListStore, ILocalStore {
     entities: {},
   };
   private _meta: Meta = Meta.initial;
-  private readonly _apiStore = new ApiStore(baseUrl);
+  private readonly _apiStore = rootStore.apiStore;
+  private readonly _perPage: number = 12;
+  private _page: number = 1;
+  private _inputValue: string = "google";
+  private _searchValue: string = "";
 
   constructor() {
     makeObservable<ReposListStore, PrivateFields>(this, {
       _list: observable.ref,
       _meta: observable,
+      _perPage: observable,
+      _searchValue: observable,
+      _inputValue: observable,
+      _page: observable,
       list: computed,
       meta: computed,
-      getOrganizationReposList: action,
+      inputValue: computed,
+      _getOrganizationReposList: action,
       destroy: action,
+      loadFirstPage: action.bound,
+      setInputValue: action.bound,
     });
   }
 
-  async getOrganizationReposList({
+  setInputValue(value: string) {
+    this._inputValue = value;
+  }
+
+  get inputValue() {
+    return this._inputValue;
+  }
+
+  get list(): RepoItemModel[] {
+    return linearizeCollection(this._list);
+  }
+
+  get meta(): Meta {
+    return this._meta;
+  }
+
+  async _getOrganizationReposList({
     organizationName,
     per_page,
     page,
@@ -104,14 +134,20 @@ export default class ReposListStore implements IReposListStore, ILocalStore {
         this._list = getInitialCollectionModel();
       }
     });
-
     // Документация github: https://docs.github.com/en/rest/reference/repos#list-organization-repositories
   }
-  get list(): RepoItemModel[] {
-    return linearizeCollection(this._list);
-  }
 
-  get meta(): Meta {
-    return this._meta;
+  loadFirstPage(): void {
+    if (this._searchValue === this._inputValue) {
+      return;
+    } else {
+      this._searchValue = this._inputValue;
+      this._page = 1;
+      this._getOrganizationReposList({
+        page: 1,
+        per_page: this._perPage,
+        organizationName: this._searchValue,
+      });
+    }
   }
 }
