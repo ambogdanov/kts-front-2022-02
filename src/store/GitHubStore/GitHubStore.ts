@@ -4,21 +4,29 @@ import {
   HTTPMethod,
   RequestParams,
 } from "@shared/store/ApiStore/types";
-import { Meta } from "@utils/log/meta";
-import { ILocalStore } from "@utils/log/useLocalStore";
-import { makeObservable } from "mobx";
+import { Meta } from "@utils/meta";
+import { ILocalStore } from "@utils/useLocalStore";
+import {
+  action,
+  computed,
+  makeObservable,
+  observable,
+  runInAction,
+} from "mobx";
 
 import log from "../../utils/log/Logger";
 import {
-  IGitHubStore,
-  RepoItem,
-  GetOrganizationReposListParams,
   GetNewRepoParams,
-  RepoDetails,
+  GetOrganizationReposListParams,
   GetReposBranchesListParams,
+  IGitHubStore,
+  RepoDetails,
+  RepoItem,
 } from "./types";
 
 const baseUrl: string = "https://api.github.com/";
+
+type PrivateFields = "_list" | "_meta";
 
 export default class GitHubStore implements IGitHubStore, ILocalStore {
   destroy(): void {
@@ -31,14 +39,32 @@ export default class GitHubStore implements IGitHubStore, ILocalStore {
   private readonly _apiStore = new ApiStore(baseUrl);
 
   constructor() {
-    makeObservable(this, )
+    makeObservable<GitHubStore, PrivateFields>(this, {
+      _list: observable.ref,
+      _meta: observable,
+      list: computed,
+      meta: computed,
+      getOrganizationReposList: action,
+    });
+  }
+
+  get list(): RepoItem[] {
+    return this._list;
+  }
+
+  get meta(): Meta {
+    return this._meta;
   }
 
   async getOrganizationReposList({
     organizationName,
     per_page,
     page,
-  }: GetOrganizationReposListParams): Promise<ApiResponse<RepoItem[], any>> {
+  }: GetOrganizationReposListParams): Promise<void> {
+    if (page === 1) {
+      this._list = [];
+    }
+    this._meta = Meta.loading;
     const params: RequestParams<{}> = {
       method: HTTPMethod.GET,
       endpoint: `orgs/${organizationName}/repos`,
@@ -50,7 +76,16 @@ export default class GitHubStore implements IGitHubStore, ILocalStore {
         page: page,
       },
     };
-    return await this._apiStore.request(params);
+    const response = await this._apiStore.request<RepoItem[]>(params);
+    runInAction(() => {
+      if (response.success) {
+        this._meta = Meta.success;
+        this._list = [...this._list, ...response.data];
+        return;
+      }
+      this._meta = Meta.error;
+    });
+
     // Документация github: https://docs.github.com/en/rest/reference/repos#list-organization-repositories
   }
 

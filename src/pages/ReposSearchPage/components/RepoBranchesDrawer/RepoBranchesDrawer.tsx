@@ -1,10 +1,12 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import { gitHubStore } from "@app/App";
-import { StatusHTTP } from "@shared/store/ApiStore/types";
 import { GetReposBranchesListParams } from "@store/GitHubStore/types";
+import { RepoBranchesModel } from "@store/models/gitHub/repoBranches";
+import RepoBranchesStore from "@store/RepoBranchesStore";
 import log from "@utils/log/Logger";
+import { useLocalStore } from "@utils/useLocalStore";
 import { Drawer } from "antd";
+import { observer, Observer } from "mobx-react-lite";
 import { useParams, useNavigate } from "react-router-dom";
 
 export type RepoBranchesDrawerProps = {
@@ -13,20 +15,12 @@ export type RepoBranchesDrawerProps = {
   onClose?: () => void;
 };
 
-type RepoBranches = {
-  name: string;
-  commit: {
-    sha: string;
-    url: string;
-  };
-};
-
 export const RepoBranchesDrawer: React.FC<RepoBranchesDrawerProps> = ({
   isVisible,
   width,
   onClose,
 }: RepoBranchesDrawerProps) => {
-  const [branches, setBranches] = useState<[]>([]);
+  const repoBranchesStore = useLocalStore(() => new RepoBranchesStore());
   const [visible, setVisible] = useState<boolean>(false);
   const { organizationName, repoName } =
     useParams<GetReposBranchesListParams>();
@@ -37,24 +31,12 @@ export const RepoBranchesDrawer: React.FC<RepoBranchesDrawerProps> = ({
   };
 
   useEffect(() => {
-    gitHubStore
+    repoBranchesStore
       .getReposBranchesList({ organizationName, repoName })
-      .then((result) => {
-        if (result.status === StatusHTTP.NotFound) {
-          handleClick();
-        } else {
-          setBranches(result.data);
-          setVisible(isVisible);
-        }
+      .then(() => {
+        setVisible(isVisible);
       });
-  }, [repoName, isVisible, organizationName]);
-
-  const elements = useMemo(() => {
-    return branches.map((item: RepoBranches) => {
-      log("Branches mapping");
-      return <li key={item.commit.sha}>{item.name}</li>;
-    });
-  }, [branches]);
+  }, [organizationName, repoName, repoBranchesStore]);
 
   return (
     <Drawer
@@ -64,9 +46,13 @@ export const RepoBranchesDrawer: React.FC<RepoBranchesDrawerProps> = ({
       visible={visible}
       width={width}
     >
-      <ul>{elements}</ul>
+      <ul>
+        {repoBranchesStore.list.map((item: RepoBranchesModel) => {
+          return <li key={item.commit.sha}>{item.name}</li>;
+        })}
+      </ul>
     </Drawer>
   );
 };
 
-export default React.memo(RepoBranchesDrawer);
+export default observer(RepoBranchesDrawer);
