@@ -1,4 +1,3 @@
-import ApiStore from "@apiStore";
 import { HTTPMethod, RequestParams } from "@shared/store/ApiStore/types";
 import {
   normalizeRepoBranches,
@@ -40,7 +39,7 @@ export default class RepoBranchesStore
       _meta: observable,
       list: computed,
       meta: computed,
-      getReposBranchesList: action,
+      getReposBranchesList: action.bound,
     });
   }
 
@@ -56,6 +55,9 @@ export default class RepoBranchesStore
     organizationName,
     repoName,
   }: GetReposBranchesListParams): Promise<void> {
+    if (this._meta === Meta.loading) {
+      return;
+    }
     this._list = [];
     this._meta = Meta.loading;
     const params: RequestParams<{}> = {

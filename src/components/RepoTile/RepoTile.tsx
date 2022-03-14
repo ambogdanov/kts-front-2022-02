@@ -8,7 +8,7 @@ import styles from "./Repotile.module.scss";
 
 export type RepoTileProps = {
   item: RepoItemModel;
-  onClick: (e: React.MouseEvent) => void;
+  onClick: (repoOwner: string, repo: string) => void;
 };
 
 const RepoTile: React.FC<RepoTileProps> = ({
@@ -18,7 +18,7 @@ const RepoTile: React.FC<RepoTileProps> = ({
   const { name, owner, stargazersCount, updatedAt } = item;
 
   return (
-    <div className={styles.item} onClick={onClick}>
+    <div className={styles.item} onClick={(e) => onClick(owner.login, name)}>
       <Avatar src={owner.avatarUrl} alt={owner.login} />
       <div className={styles.item__title}>
         <p className={styles.item__name}>{name}</p>

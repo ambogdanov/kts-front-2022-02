@@ -23,20 +23,7 @@ import {
 } from "mobx";
 
 import log from "../../utils/log/Logger";
-
-export interface IReposListStore {
-  _getOrganizationReposList(
-    params: GetOrganizationReposListParams
-  ): Promise<void>;
-}
-
-type PrivateFields =
-  | "_list"
-  | "_meta"
-  | "_perPage"
-  | "_searchValue"
-  | "_inputValue"
-  | "_page";
+import { IReposListStore, PrivateFields } from "./types";
 
 export default class ReposListStore implements IReposListStore, ILocalStore {
   destroy(): void {
@@ -66,7 +53,7 @@ export default class ReposListStore implements IReposListStore, ILocalStore {
       list: computed,
       meta: computed,
       inputValue: computed,
-      _getOrganizationReposList: action,
+      _getOrganizationReposList: action.bound,
       destroy: action,
       loadNextPage: action,
       loadFirstPage: action.bound,
@@ -90,11 +77,14 @@ export default class ReposListStore implements IReposListStore, ILocalStore {
     return this._meta;
   }
 
-  async _getOrganizationReposList({
+  private async _getOrganizationReposList({
     organizationName,
     per_page,
     page,
   }: GetOrganizationReposListParams): Promise<void> {
+    if (this._meta === Meta.loading) {
+      return;
+    }
     if (page === 1) {
       this._list = getInitialCollectionModel();
     }
@@ -114,12 +104,13 @@ export default class ReposListStore implements IReposListStore, ILocalStore {
     runInAction(() => {
       if (!response.success) {
         this._meta = Meta.error;
+        return;
       }
       try {
         const list: RepoItemModel[] = [];
-        for (const item of response.data) {
-          list.push(normalizeRepoItem(item));
-        }
+        response.data.forEach((item: RepoItemApi) =>
+          list.push(normalizeRepoItem(item))
+        );
         this._list = normalizeCollection(
           this._list,
           list,
@@ -142,15 +133,14 @@ export default class ReposListStore implements IReposListStore, ILocalStore {
   loadFirstPage(): void {
     if (this._searchValue === this._inputValue) {
       return;
-    } else {
-      this._searchValue = this._inputValue;
-      this._page = 1;
-      this._getOrganizationReposList({
-        page: 1,
-        per_page: this._perPage,
-        organizationName: this._searchValue,
-      });
     }
+    this._searchValue = this._inputValue;
+    this._page = 1;
+    this._getOrganizationReposList({
+      page: 1,
+      per_page: this._perPage,
+      organizationName: this._searchValue,
+    });
   }
   loadNextPage(): void {
     this._page++;

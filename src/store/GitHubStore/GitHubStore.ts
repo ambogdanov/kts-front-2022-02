@@ -14,7 +14,6 @@ import {
   runInAction,
 } from "mobx";
 
-import log from "../../utils/log/Logger";
 import {
   GetNewRepoParams,
   GetOrganizationReposListParams,
@@ -30,7 +29,6 @@ type PrivateFields = "_list" | "_meta";
 
 export default class GitHubStore implements IGitHubStore, ILocalStore {
   destroy(): void {
-    //TODO
     throw new Error("Method not implemented.");
   }
 
@@ -93,7 +91,6 @@ export default class GitHubStore implements IGitHubStore, ILocalStore {
     organizationName,
     repoName,
   }: GetReposBranchesListParams): Promise<ApiResponse<RepoItem[], any>> {
-    log(repoName);
     const params: RequestParams<{}> = {
       method: HTTPMethod.GET,
       endpoint: `repos/${organizationName}/${repoName}/branches`,
