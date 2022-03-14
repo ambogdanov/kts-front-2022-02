@@ -3,7 +3,9 @@
     "react-app",
     "plugin:prettier/recommended"
   ],
-  "plugins": ["prettier"],
+  "plugins": [
+    "prettier"
+  ],
   "rules": {
     "no-console": "error",
     "prettier/prettier": "error",

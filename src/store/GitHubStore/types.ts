@@ -42,7 +42,7 @@ export type RepoDetails = {
 export interface IGitHubStore {
   getOrganizationReposList(
     params: GetOrganizationReposListParams
-  ): Promise<ApiResponse<RepoItem[], any>>;
+  ): Promise<void>;
   createRepoAuthUser(
     params: GetNewRepoParams
   ): Promise<ApiResponse<RepoDetails, any>>;
